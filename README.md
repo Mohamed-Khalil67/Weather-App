@@ -1,5 +1,3 @@
-Here's the clean version without code blocks that you can easily copy:
-
 # Weather Detector Application
 
 A lightweight Django web application that provides real-time weather information for locations worldwide using the OpenWeatherMap API.
