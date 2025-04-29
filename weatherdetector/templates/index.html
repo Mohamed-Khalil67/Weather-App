@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Weather Detector</title>
+  <!-- Bootstrap 3.4.0 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      background-color: #f5f5f5;
+    }
+    .weather-card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .weather-icon {
+      text-align: center;
+      margin: 15px 0;
+    }
+    .weather-icon img {
+      width: 80px;
+      height: 80px;
+    }
+    .weather-desc {
+      display: block;
+      font-size: 1.2em;
+      margin-top: 5px;
+      text-transform: capitalize;
+    }
+    .detail-item {
+      margin: 10px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .detail-label {
+      font-weight: bold;
+      color: #555;
+      margin-right: 10px;
+    }
+    .welcome-message {
+      text-align: center;
+      margin-top: 50px;
+      color: #666;
+    }
+    .navbar {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar row" style="background: #4a76a8; color: white;">
+    <div class="col-md-12 text-center">
+      <h1>Weather Detector</h1>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3" style="margin-top: 30px;">
+        <form action="" method="post" class="form-inline">
+          {% csrf_token %}
+          <div class="input-group" style="width: 100%;">
+            <input type="text" class="form-control" name="city" placeholder="Enter city name" required>
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="submit">
+                <i class="glyphicon glyphicon-search"></i> Search
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      {% if error_message %}
+        <div class="col-md-6 col-md-offset-3">
+          <div class="alert alert-danger" style="margin-top: 20px;">
+            <strong>Error:</strong> {{ error_message }}
+          </div>
+        </div>
+      {% elif has_data %}
+        <div class="col-md-6 col-md-offset-3">
+          <div class="weather-card">
+            <h2 class="text-center city-name">{{ city }}</h2>
+            <div class="weather-icon">
+              <img src="http://openweathermap.org/img/w/{{ data.icon }}.png" alt="{{ data.description }}">
+              <span class="weather-desc">{{ data.description }}</span>
+            </div>
+            
+            <div class="weather-details">
+              <div class="detail-item">
+                <span class="detail-label">Country:</span>
+                <span class="detail-value">{{ data.country_code }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Coordinates:</span>
+                <span class="detail-value">{{ data.coordinate }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Temperature:</span>
+                <span class="detail-value">{{ data.temp }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Pressure:</span>
+                <span class="detail-value">{{ data.pressure }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Humidity:</span>
+                <span class="detail-value">{{ data.humidity }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Wind:</span>
+                <span class="detail-value">{{ data.wind_speed }}, {{ data.wind_degree }}</span>
+              </div>
+              {% if data.visibility %}
+              <div class="detail-item">
+                <span class="detail-label">Visibility:</span>
+                <span class="detail-value">{{ data.visibility }}</span>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="col-md-6 col-md-offset-3">
+          <div class="welcome-message">
+            <h3>Welcome to Weather Detector</h3>
+            <p>Enter a city name above to get current weather information</p>
+            <p><small>Try searching for cities like "London", "New York", or "Tokyo"</small></p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
