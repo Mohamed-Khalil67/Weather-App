@@ -2,6 +2,10 @@ from django.shortcuts import render
 import json
 import urllib.request
 from urllib.error import URLError, HTTPError
+from django.conf import settings
+
+
+
 
 def index(request):
     data = {}
@@ -16,7 +20,8 @@ def index(request):
         else:
             try:
                 # Make API request
-                api_url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid=1b07f5f267c6db02ab230e32111984f9'
+                api_key = settings.OPENWEATHERMAP_API_KEY
+                api_url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}'
                 with urllib.request.urlopen(api_url) as response:
                     json_data = json.loads(response.read().decode('utf-8'))
                     
